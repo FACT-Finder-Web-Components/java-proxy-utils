@@ -1,5 +1,7 @@
 package de.omikron;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ public class Proxy extends HttpServlet {
 
 	/**
 	 * Start a jetty Server with the Proxy Servlet
+	 * 
 	 * @param args
 	 * @throws Exception
 	 */
@@ -24,26 +27,29 @@ public class Proxy extends HttpServlet {
 		ServletHandler handler = new ServletHandler();
 		server.setHandler(handler);
 
-		handler.addServletWithMapping(Proxy.class, "/proxy");
+		handler.addServletWithMapping(Proxy.class, "/*");
 		server.start();
 		server.join();
 	}
 
-	private HelperSDK sdk;
+	private HelperSDK	sdk;
+	private FFSettings	settings;
 
 	@Override
 	public void init() throws ServletException {
-		FFSettings settings = new FFSettings();
+		settings = new FFSettings();
 		settings.setAccount("admin");
 		settings.setPassword("Norkimo12!");
-		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder7.2");
+		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
 		sdk = new HelperSDK(settings);
 		super.init();
 	}
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws javax.servlet.ServletException, java.io.IOException {
-		System.out.println("doGet");
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		sdk.redirect(req, resp);
 	};
+
+	public void doOptions(HttpServletRequest req, HttpServletResponse resp) {
+		sdk.options(req, resp);
+	}
 }
