@@ -1,27 +1,18 @@
 package de.omikron.helper;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import de.omikron.helper.client.HTTPRequestProcessor;
-import de.omikron.helper.client.WebserviceAccess;
 import de.omikron.helper.domain.Result;
-import de.omikron.helper.settings.FFResponse;
+import de.omikron.helper.reponse.SearchResponse;
 import de.omikron.helper.settings.FFService;
 import de.omikron.helper.settings.FFSettings;
 
@@ -31,6 +22,7 @@ public class HelperSDK {
 	private static final String	ACCESS_CONTROL_REQUEST_HEADERS	= "Access-Control-Request-Headers";
 
 	private FFSettings			settings;
+	private Gson				gson							= new Gson();
 
 	public HelperSDK(FFSettings settings) {
 		this.settings = settings;
@@ -38,14 +30,10 @@ public class HelperSDK {
 
 	// 0. manage preflight
 	public void options(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println(req);
 
 		Collection<String> oldHeader = resp.getHeaders(ACCESS_CONTROL_ALLOW_HEADERS);
-		System.out.println("old:" + oldHeader);
 		List<String> list = Collections.list(req.getHeaders(ACCESS_CONTROL_REQUEST_HEADERS));
-		System.out.println("new: " + list);
 		list.addAll(oldHeader);
-		System.out.println("retain: " + list);
 		String respHeaders = "";
 		for (int i = 0; i < list.size(); i++) {
 			if (i != 0) {
@@ -53,8 +41,6 @@ public class HelperSDK {
 			}
 			respHeaders += list.get(i);
 		}
-		System.out.println("result: " + respHeaders);
-
 		resp.setHeader("Access-Control-Allow-Origin", "*");
 		resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
 		resp.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");
@@ -63,25 +49,9 @@ public class HelperSDK {
 	}
 
 	// 1. FACT-Finder Authentifizierung
-	public FFResponse get(HttpServletRequest req) throws IOException {
-		FFService service = extractService(req);
-		String data = sendRequest(req);
-		FFResponse ffResponse = new FFResponse(data, service);
-		return ffResponse;
-	}
-
-	public Future<String> getAsync(final HttpServletRequest req)
-			throws InterruptedException, ExecutionException, TimeoutException {
-
-		FutureTask<String> task = new FutureTask<String>(new Callable<String>() {
-
-			public String call() throws Exception {
-				return sendRequest(req);
-			}
-		});
-
-		return task;
-	}
+	// public FFResponse get(HttpServletRequest req) throws IOException {
+	// return new FFResponse(sendRequest(req), extractService(req));
+	// }
 
 	// 2. absetzen von http request
 	public String sendRequest(HttpServletRequest req) throws IOException {
@@ -99,32 +69,28 @@ public class HelperSDK {
 	}
 
 	// 3. Bearbeiten der JSON-Response
-	public Result parse(String content) {
-		// TODO parse stuff
-		return null;
+	public SearchResponse parse(String rawJson) {
+		return gson.fromJson(rawJson, SearchResponse.class);
 	}
 
-	public Result parse(String content, FFService service) {
-		// TODO parse stuff for that service
-		return null;
-	}
+	// public Result parse(String rawJson, FFService service) {
+	// return parse(rawJson);
+	// }
 
-	public Result parse(FFResponse res) {
-		// TODO parse stuff for that service
-		return null;
-	}
+	// public Result parse(FFResponse res) {
+	// return parse(res.getContent());
+	// }
 
-	public String asJson(Result result) {
-		// TODO
-		return "";
+	public String asJson(SearchResponse result) {
+		return gson.toJson(result);
 	}
 
 	private FFService extractService(HttpServletRequest req) {
-		// TODO
-		return null;
+		String extractService = HTTPRequestProcessor.extractService(req);
+		return FFService.valueOf(extractService.replaceAll(".ff", "").toUpperCase());
 	}
-	
-	public void copyHeaders(HttpServletRequest req, HttpServletResponse resp){
+
+	public void copyHeaders(HttpServletRequest req, HttpServletResponse resp) {
 		resp.setHeader("Access-Control-Allow-Origin", "*");
 		resp.setHeader("Access-Control-Allow-Methods", "GET, POST");
 		resp.setHeader("Allow", "GET, HEAD, POST, TRACE, OPTIONS");

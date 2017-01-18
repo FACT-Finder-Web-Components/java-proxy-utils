@@ -7,11 +7,18 @@ import java.util.ArrayList;
 
 import de.omikron.helper.client.JSONParameterParser;
 
-
-
+/**
+ * @author arno.pitters
+ *
+ */
+/**
+ * @author arno.pitters
+ *
+ */
 public class Result implements Serializable {
 
 	private static final long				serialVersionUID			= 7059690891505121578L;
+	
 	private String							channel						= null;
 	private String							refKey						= null;
 	private String							resultArticleNumberStatus	= null;
@@ -30,6 +37,10 @@ public class Result implements Serializable {
 	private ArrayList<Campaign>				campaigns					= new ArrayList<Campaign>();
 	private SearchControlParams				searchControlParams			= null;
 
+	public Result() {
+
+	}
+
 	public SearchControlParams getSearchControlParams() {
 		return searchControlParams;
 	}
@@ -40,9 +51,8 @@ public class Result implements Serializable {
 
 	public String getQuery() {
 		try {
-			return URLDecoder.decode(
-					JSONParameterParser.getParameterStringFromSearchParams(searchParams, JSONParameterParser.PARAMS_QUERY),
-					"UTF-8");
+			return URLDecoder.decode(JSONParameterParser.getParameterStringFromSearchParams(searchParams,
+					JSONParameterParser.PARAMS_QUERY), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			return null;
 		}
@@ -194,6 +204,17 @@ public class Result implements Serializable {
 
 	public ArrayList<Campaign> getCampaigns() {
 		return campaigns;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [channel=" + channel + ", refKey=" + refKey + ", resultArticleNumberStatus="
+				+ resultArticleNumberStatus + ", resultCount=" + resultCount + ", resultStatus=" + resultStatus
+				+ ", searchParams=" + searchParams + ", searchTime=" + searchTime + ", simiFirstRecord="
+				+ simiFirstRecord + ", simiLastRecord=" + simiLastRecord + ", timedOut=" + timedOut + ", records="
+				+ records + ", asnGroups=" + asnGroups + ", paging=" + paging + ", sortItems=" + sortItems
+				+ ", resultsPerPageItems=" + resultsPerPageItems + ", campaigns=" + campaigns + ", searchControlParams="
+				+ searchControlParams + "]";
 	}
 
 }

@@ -5,8 +5,12 @@ import java.util.Properties;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import de.omikron.helper.client.WebserviceAccess;
+import de.omikron.helper.settings.FFSettings;
 
 public class FFSecurity {
+
+	public static final String	AUTH_SIMPLE		= "simple";
+	public static final String	AUTH_ADVANCED	= "advanced";
 
 	/**
 	 * Authentification string.
@@ -18,8 +22,13 @@ public class FFSecurity {
 	 * @param postfix
 	 * @return getAuthString
 	 */
-	protected static String getAuthString(final String authentificationType, final String username,
-			final String password, final String prefix, final String postfix) {
+	public static String getAuthString(FFSettings settings, String type) {
+		return getAuthString(type, settings.getAccount(), settings.getPassword(), settings.getPrefix(),
+				settings.getPostfix());
+	}
+
+	public static String getAuthString(final String authentificationType, final String username, final String password,
+			final String prefix, final String postfix) {
 		final StringBuffer authentificationInfo = new StringBuffer();
 
 		if (authentificationType != null && authentificationType.toLowerCase().equals("simple")) {

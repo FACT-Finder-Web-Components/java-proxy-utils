@@ -3,9 +3,12 @@ package de.omikron.helper.settings;
 public class FFSettings {
 
 	private String	url;
-	private String	key;
+
 	private String	account;
 	private String	password;
+
+	private String	prefix;
+	private String	postfix;
 
 	public FFSettings() {
 
@@ -17,14 +20,6 @@ public class FFSettings {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	public String getAccount() {
@@ -41,6 +36,22 @@ public class FFSettings {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public String getPostfix() {
+		return postfix;
+	}
+
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
 	}
 
 }
