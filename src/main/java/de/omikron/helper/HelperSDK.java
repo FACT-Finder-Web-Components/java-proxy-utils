@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import de.omikron.helper.client.HTTPRequestProcessor;
 import de.omikron.helper.domain.Result;
@@ -22,10 +23,11 @@ public class HelperSDK {
 	private static final String	ACCESS_CONTROL_REQUEST_HEADERS	= "Access-Control-Request-Headers";
 
 	private FFSettings			settings;
-	private Gson				gson							= new Gson();
+	private Gson				gson;//							= new Gson();
 
 	public HelperSDK(FFSettings settings) {
 		this.settings = settings;
+		this.gson = new GsonBuilder().serializeNulls().create();
 	}
 
 	// 0. manage preflight

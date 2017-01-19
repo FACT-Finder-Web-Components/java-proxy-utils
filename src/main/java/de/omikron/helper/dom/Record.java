@@ -8,7 +8,7 @@ public class Record {
 	private List<String>			foundWords;
 	private String					id			= null;
 	private List<String>			keywords;
-	private HashMap<String, String>	records		= new HashMap<String, String>();
+	private HashMap<String, Object>	record		= new HashMap<String, Object>();
 	private int						position	= -1;
 
 	private float					searchSimilarity;
@@ -41,12 +41,12 @@ public class Record {
 		this.keywords = keywords;
 	}
 
-	public HashMap<String, String> getRecords() {
-		return records;
+	public HashMap<String, Object> getRecord() {
+		return record;
 	}
 
-	public void setRecords(HashMap<String, String> records) {
-		this.records = records;
+	public void setRecords(HashMap<String, Object> records) {
+		this.record = records;
 	}
 
 	public int getPosition() {
@@ -75,7 +75,7 @@ public class Record {
 
 	@Override
 	public String toString() {
-		return "Record [foundWords=" + foundWords + ", id=" + id + ", keywords=" + keywords + ", records=" + records
+		return "Record [foundWords=" + foundWords + ", id=" + id + ", keywords=" + keywords + ", records=" + record
 				+ ", position=" + position + ", searchSimilarity=" + searchSimilarity + ", simiMalusAdd=" + simiMalusAdd
 				+ "]";
 	}

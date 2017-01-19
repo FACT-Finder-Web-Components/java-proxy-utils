@@ -1,16 +1,18 @@
 package de.omikron.helper.dom;
 
 import java.util.List;
+import java.util.Map;
 
 public class SearchResult {
 
 	private List<BreadCrumbTrail>	breadCrumbTrailItems;
 	private List<Campaign>			campaigns;
+	private String					channel;
+	private Map<String, Object>		fieldRoles;
 	private List<Filter>			filters;
 	private List<Group>				groups;
 	private Paging					paging;
 	private List<Record>			records;
-	private String					channel;
 	private String					resultArticleNumberStatus;
 	private int						resultCount;
 	private String					resultStatus;
@@ -25,7 +27,6 @@ public class SearchResult {
 	private boolean					timedOut	= false;
 
 	public SearchResult() {
-
 	}
 
 	public List<BreadCrumbTrail> getBreadCrumbTrailItems() {
@@ -42,6 +43,22 @@ public class SearchResult {
 
 	public void setCampaigns(List<Campaign> campaigns) {
 		this.campaigns = campaigns;
+	}
+
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+
+	public Map<String, Object> getFieldRoles() {
+		return fieldRoles;
+	}
+
+	public void setFieldRoles(Map<String, Object> fieldRoles) {
+		this.fieldRoles = fieldRoles;
 	}
 
 	public List<Filter> getFilters() {
@@ -74,14 +91,6 @@ public class SearchResult {
 
 	public void setRecords(List<Record> records) {
 		this.records = records;
-	}
-
-	public String getChannel() {
-		return channel;
-	}
-
-	public void setChannel(String channel) {
-		this.channel = channel;
 	}
 
 	public String getResultArticleNumberStatus() {
@@ -182,14 +191,14 @@ public class SearchResult {
 
 	@Override
 	public String toString() {
-		return "SearchResult [breadCrumbTrailItems=" + breadCrumbTrailItems + ", campaigns=" + campaigns + ", filters="
-				+ filters + ", groups=" + groups + ", paging=" + paging + ", records=" + records + ", channel="
-				+ channel + ", resultArticleNumberStatus=" + resultArticleNumberStatus + ", resultCount=" + resultCount
-				+ ", resultStatus=" + resultStatus + ", resultsPerPageList=" + resultsPerPageList
-				+ ", searchControlParams=" + searchControlParams + ", searchParams=" + searchParams + ", searchTime="
-				+ searchTime + ", simiFirstRecord=" + simiFirstRecord + ", simiLastRecord=" + simiLastRecord
-				+ ", singleWordResults=" + singleWordResults + ", sortsList=" + sortsList + ", timedOut=" + timedOut
-				+ "]";
+		return "SearchResult [breadCrumbTrailItems=" + breadCrumbTrailItems + ", campaigns=" + campaigns + ", channel="
+				+ channel + ", fieldRoles=" + fieldRoles + ", filters=" + filters + ", groups=" + groups + ", paging="
+				+ paging + ", records=" + records + ", resultArticleNumberStatus=" + resultArticleNumberStatus
+				+ ", resultCount=" + resultCount + ", resultStatus=" + resultStatus + ", resultsPerPageList="
+				+ resultsPerPageList + ", searchControlParams=" + searchControlParams + ", searchParams=" + searchParams
+				+ ", searchTime=" + searchTime + ", simiFirstRecord=" + simiFirstRecord + ", simiLastRecord="
+				+ simiLastRecord + ", singleWordResults=" + singleWordResults + ", sortsList=" + sortsList
+				+ ", timedOut=" + timedOut + "]";
 	}
 
 }

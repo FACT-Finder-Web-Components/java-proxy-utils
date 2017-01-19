@@ -4,16 +4,16 @@ import java.util.List;
 
 public class Group {
 
-	private int				detailedLinks;
-	private List<Object>	elements;			// TODO
-	private String			filterStyle;
-	private int				groupOrder;
-	private String			name;
-	private String			selectionType;
-	private List<Object>	selectedElements;	// TODO
-	private boolean			showPreviewImages;
-	private String			type;
-	private String			unit;
+	private int					detailedLinks;
+	private List<AsnElement>	elements;
+	private String				filterStyle;
+	private int					groupOrder;
+	private String				name;
+	private String				selectionType;
+	private List<AsnElement>	selectedElements;
+	private boolean				showPreviewImages;
+	private String				type;
+	private String				unit;
 
 	public Group() {
 
@@ -27,11 +27,11 @@ public class Group {
 		this.detailedLinks = detailedLinks;
 	}
 
-	public List<Object> getElements() {
+	public List<AsnElement> getElements() {
 		return elements;
 	}
 
-	public void setElements(List<Object> elements) {
+	public void setElements(List<AsnElement> elements) {
 		this.elements = elements;
 	}
 
@@ -67,11 +67,11 @@ public class Group {
 		this.selectionType = selectionType;
 	}
 
-	public List<Object> getSelectedElements() {
+	public List<AsnElement> getSelectedElements() {
 		return selectedElements;
 	}
 
-	public void setSelectedElements(List<Object> selectedElements) {
+	public void setSelectedElements(List<AsnElement> selectedElements) {
 		this.selectedElements = selectedElements;
 	}
 
