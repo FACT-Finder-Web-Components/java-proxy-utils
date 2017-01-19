@@ -2,20 +2,20 @@ package de.omikron.helper.dom;
 
 import java.util.List;
 
-public class Question {
+public class AdvisorQuestion {
 
-	private List<Answer>	answers;
-	private String			id;
-	private String			text;
+	private List<AdvisorAnswer>	answers;
+	private String				id;
+	private String				text;
 
-	public Question() {
+	public AdvisorQuestion() {
 	}
 
-	public List<Answer> getAnswers() {
+	public List<AdvisorAnswer> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(List<Answer> answers) {
+	public void setAnswers(List<AdvisorAnswer> answers) {
 		this.answers = answers;
 	}
 

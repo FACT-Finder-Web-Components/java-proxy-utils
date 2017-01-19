@@ -1,13 +1,13 @@
 package de.omikron.helper.dom;
 
-public class Answer {
+public class AdvisorAnswer {
 
 	private String	id;
 	private String	params;
 	// private List<Question> questions;//TODO!
 	private String	text;
 
-	public Answer() {
+	public AdvisorAnswer() {
 	}
 
 	public String getId() {

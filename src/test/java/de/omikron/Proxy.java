@@ -68,6 +68,8 @@ public class Proxy extends HttpServlet {
 		String json = sdk.sendRequest(req);
 		long start = System.currentTimeMillis();
 		SearchResponse parse = sdk.parse(json);
+		//TODO: add suggest response
+		//TODO: add recommendation response
 		System.out.println("parse time:" + (System.currentTimeMillis() - start));
 
 		sdk.writeResponse(resp, sdk.asJson(parse));

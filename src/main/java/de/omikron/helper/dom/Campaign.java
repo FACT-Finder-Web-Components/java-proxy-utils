@@ -4,32 +4,32 @@ import java.util.List;
 
 public class Campaign {
 
-	private List<Question>		activeQuestions;
-	private List<Question>		advisorTree;
-	private String				category;
-	private List<FeedbackText>	feedbackTexts;
-	private String				flavour;
-	private String				id;
-	private String				name;
-	private List<Record>		pushedProductsRecords;
-	private Target				target;
+	private List<AdvisorQuestion>	activeQuestions;
+	private List<AdvisorQuestion>	advisorTree;
+	private String					category;
+	private List<FeedbackText>		feedbackTexts;
+	private String					flavour;
+	private String					id;
+	private String					name;
+	private List<Record>			pushedProductsRecords;
+	private Target					target;
 
 	public Campaign() {
 	}
 
-	public List<Question> getActiveQuestions() {
+	public List<AdvisorQuestion> getActiveQuestions() {
 		return activeQuestions;
 	}
 
-	public void setActiveQuestions(List<Question> activeQuestions) {
+	public void setActiveQuestions(List<AdvisorQuestion> activeQuestions) {
 		this.activeQuestions = activeQuestions;
 	}
 
-	public List<Question> getAdvisorTree() {
+	public List<AdvisorQuestion> getAdvisorTree() {
 		return advisorTree;
 	}
 
-	public void setAdvisorTree(List<Question> advisorTree) {
+	public void setAdvisorTree(List<AdvisorQuestion> advisorTree) {
 		this.advisorTree = advisorTree;
 	}
 

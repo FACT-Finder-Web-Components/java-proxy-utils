@@ -10,7 +10,7 @@ public class SearchResult {
 	private String					channel;
 	private Map<String, Object>		fieldRoles;
 	private List<Filter>			filters;
-	private List<Group>				groups;
+	private List<AsnGroup>				groups;
 	private Paging					paging;
 	private List<Record>			records;
 	private String					resultArticleNumberStatus;
@@ -69,11 +69,11 @@ public class SearchResult {
 		this.filters = filters;
 	}
 
-	public List<Group> getGroups() {
+	public List<AsnGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<Group> groups) {
+	public void setGroups(List<AsnGroup> groups) {
 		this.groups = groups;
 	}
 

@@ -2,7 +2,7 @@ package de.omikron.helper.dom;
 
 import java.util.List;
 
-public class Group {
+public class AsnGroup {
 
 	private int					detailedLinks;
 	private List<AsnElement>	elements;
@@ -15,7 +15,7 @@ public class Group {
 	private String				type;
 	private String				unit;
 
-	public Group() {
+	public AsnGroup() {
 
 	}
 
