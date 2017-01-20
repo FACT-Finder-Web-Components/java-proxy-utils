@@ -2,7 +2,9 @@ package de.omikron.helper.reponse;
 
 import java.util.List;
 
-public class SuggestResponse {
+import de.omikron.helper.dom.Suggestion;
+
+public class SuggestResponse extends FFResponse {
 
 	private List<Suggestion> suggestions;
 

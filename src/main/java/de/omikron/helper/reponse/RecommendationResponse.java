@@ -1,5 +1,5 @@
 package de.omikron.helper.reponse;
 
-public class RecommendationResponse {
+public class RecommendationResponse extends FFResponse{
 
 }

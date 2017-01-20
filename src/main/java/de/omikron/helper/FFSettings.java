@@ -1,4 +1,4 @@
-package de.omikron.helper.settings;
+package de.omikron.helper;
 
 public class FFSettings {
 

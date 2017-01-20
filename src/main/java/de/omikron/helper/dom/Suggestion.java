@@ -1,8 +1,10 @@
-package de.omikron.helper.reponse;
+package de.omikron.helper.dom;
 
 import java.util.HashMap;
 
-public class Suggestion {
+import de.omikron.helper.reponse.FFResponse;
+
+public class Suggestion extends FFResponse{
 
 	private int						hitCount;
 	private String					imgUrl;

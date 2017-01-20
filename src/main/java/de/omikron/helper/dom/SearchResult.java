@@ -10,7 +10,7 @@ public class SearchResult {
 	private String					channel;
 	private Map<String, Object>		fieldRoles;
 	private List<Filter>			filters;
-	private List<AsnGroup>				groups;
+	private List<AsnGroup>			groups;
 	private Paging					paging;
 	private List<Record>			records;
 	private String					resultArticleNumberStatus;

@@ -2,7 +2,7 @@ package de.omikron.helper.reponse;
 
 import de.omikron.helper.dom.SearchResult;
 
-public class SearchResponse {
+public class SearchResponse extends FFResponse{
 
 	private SearchResult searchResult;
 

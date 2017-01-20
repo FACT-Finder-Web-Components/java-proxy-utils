@@ -1,11 +1,6 @@
 package de.omikron.helper;
 
-import java.util.Properties;
-
 import org.apache.commons.codec.digest.DigestUtils;
-
-import de.omikron.helper.client.WebserviceAccess;
-import de.omikron.helper.settings.FFSettings;
 
 public class FFSecurity {
 
@@ -44,19 +39,6 @@ public class FFSecurity {
 			authentificationInfo.append("&timestamp=" + time);
 		}
 		return authentificationInfo.toString();
-	}
-
-	private static String getAuthentificationString(final WebserviceAccess wsAccess) {
-		Properties props = wsAccess.getServiceProperties();
-		final String authentificationType = props.getProperty(WebserviceAccess.WEB_SERVICE_AUTH_TYPE);
-		final String authentificationPrefix = props.getProperty(WebserviceAccess.WEB_SERVICE_AUTH_PREFIX);
-		final String authentificationPostfix = props.getProperty(WebserviceAccess.WEB_SERVICE_AUTH_POSTFIX);
-		final String authentificationUsername = props.getProperty(WebserviceAccess.WEB_SERVICE_AUTH_USERNAME);
-		final String authentificationPassword = props.getProperty(WebserviceAccess.WEB_SERVICE_AUTH_PASSWORD);
-
-		final String authString = getAuthString(authentificationType, authentificationUsername,
-				authentificationPassword, authentificationPrefix, authentificationPostfix);
-		return authString;
 	}
 
 }

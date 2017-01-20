@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 
+import de.omikron.helper.FFService;
+import de.omikron.helper.FFSettings;
 import de.omikron.helper.HelperSDK;
+import de.omikron.helper.reponse.FFResponse;
 import de.omikron.helper.reponse.SearchResponse;
-import de.omikron.helper.settings.FFSettings;
 
 @SuppressWarnings("serial")
 public class Proxy extends HttpServlet {
@@ -48,44 +50,41 @@ public class Proxy extends HttpServlet {
 		super.init();
 	}
 
+	// 1. just redirect
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 1. just redirect
-		// sdk.redirect(req, resp);
+		sdk.redirectGET(req, resp);
+	};
 
-		// 2. Manually send request
-		// sdk.copyHeaders(req, resp);
-		// String result = sdk.sendRequest(req);
-		// sdk.writeResponse(resp, result);
+	// 2. Manually send request
+	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		sdk.copyHeaders(req, resp);
+		String json = sdk.sendRequest(req);
+		sdk.writeResponse(resp, json);
+	};
 
-		// 3. extract service from request
-		// sdk.copyHeaders(req, resp);
-		// FFResponse ffResponse = sdk.get(req);
-		// System.out.println("Service: " + ffResponse.getService());
-		// sdk.writeResponse(resp, ffResponse.getContent());
-
-		// 4.parse the result to Objects and back to json
+	// 3.parse the result to Objects
+	protected void doGet3(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		sdk.copyHeaders(req, resp);
 		String json = sdk.sendRequest(req);
 		long start = System.currentTimeMillis();
-		SearchResponse parse = sdk.parse(json);
-		//TODO: add suggest response
-		//TODO: add recommendation response
+		SearchResponse parse = (SearchResponse) sdk.parse(json, null);
 		System.out.println("parse time:" + (System.currentTimeMillis() - start));
-
 		sdk.writeResponse(resp, sdk.asJson(parse));
-
-		// sdk.writeResponse(resp, json);
-
-		// Result result2 = sdk.parse(ffResponse.getContent());
-		// Result result3 = sdk.parse(ffResponse.getContent(),
-		// ffResponse.getService());
-
-		// String asJson = sdk.asJson(result1);
-		// System.out.println(asJson);
-		// sdk.writeResponse(resp, asJson);
 	};
 
-	public void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-		sdk.options(req, resp);
+	// 4.parse the result to Objects
+	protected void doGet4(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		sdk.copyHeaders(req, resp);
+
+		// extract service
+		FFService service = HelperSDK.extractService(req);
+		String json = sdk.sendRequest(req);
+
+		FFResponse parsedServiceResult = sdk.parse(json, service);
+		sdk.writeResponse(resp, sdk.asJson(parsedServiceResult));
+	};
+
+	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		sdk.redirectOPTIONS(req, resp);
 	}
 }
