@@ -179,9 +179,6 @@ public class HelperSDK {
 	// ############################
 	// ####### SERVICE REQUESTS ###
 	// ############################
-	// 1. FACT-Finder Authentifizierung
-	// 2. absetzen von http request
-	// 3. Bearbeiten der JSON-Response
 
 	// set the payload of the old request as the new request
 	public void redirectGET(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -195,8 +192,25 @@ public class HelperSDK {
 		setHeaders(resp, extractHeaders(req));
 	}
 
+	public FFHttpResponse request(String url, Map<String, String> header) throws ClientProtocolException, IOException {
+		// Build Request
+		HttpGet get = new HttpGet(url);
+
+		// Add Headers
+		for (Entry<String, String> e : header.entrySet()) {
+			get.addHeader(e.getKey(), e.getValue());
+		}
+		System.out.println("Request: " + get);
+		return client.execute(get, new FFResponseHandler());
+	}
+
 	public FFHttpResponse sendRequest(HttpServletRequest request) throws IOException {
-		// Build request String
+		String requestURL = buildRequestURL(request);
+		Map<String, String> header = extractHeaders(request);
+		return request(requestURL, header);
+	}
+
+	public String buildRequestURL(HttpServletRequest request) {
 		final StringBuffer requestURL = new StringBuffer();
 		requestURL.append(fixUrl(settings.getUrl()));
 		requestURL.append(extractService(request) + ".ff");
@@ -209,17 +223,7 @@ public class HelperSDK {
 			String authString = FFSecurity.getAuthString(settings, FFSecurity.AUTH_ADVANCED);
 			requestURL.append("&" + authString);
 		}
-
-		// Build Request
-		HttpGet get = new HttpGet(requestURL.toString());
-
-		// Add Headers
-		Map<String, String> header = extractHeaders(request);
-		for (Entry<String, String> e : header.entrySet()) {
-			get.addHeader(e.getKey(), e.getValue());
-		}
-		System.out.println("Request: " + get);
-		return client.execute(get, new FFResponseHandler());
+		return requestURL.toString();
 	}
 
 	public void writeResponse(HttpServletResponse resp, String content) throws IOException {
