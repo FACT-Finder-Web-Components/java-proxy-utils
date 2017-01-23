@@ -58,14 +58,14 @@ public class Proxy extends HttpServlet {
 	// 2. Manually send request
 	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		sdk.copyHeaders(req, resp);
-		String json = sdk.sendRequest(req);
+		String json = sdk.sendRequest(req).getData();
 		sdk.writeResponse(resp, json);
 	};
 
 	// 3.parse the result to Objects
 	protected void doGet3(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		sdk.copyHeaders(req, resp);
-		String json = sdk.sendRequest(req);
+		String json = sdk.sendRequest(req).getData();
 		long start = System.currentTimeMillis();
 		SearchResponse parse = (SearchResponse) sdk.parse(json, null);
 		System.out.println("parse time:" + (System.currentTimeMillis() - start));
@@ -78,7 +78,7 @@ public class Proxy extends HttpServlet {
 
 		// extract service
 		FFService service = HelperSDK.extractService(req);
-		String json = sdk.sendRequest(req);
+		String json = sdk.sendRequest(req).getData();
 
 		FFResponse parsedServiceResult = sdk.parse(json, service);
 		sdk.writeResponse(resp, sdk.asJson(parsedServiceResult));

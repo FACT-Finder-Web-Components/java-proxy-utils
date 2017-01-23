@@ -1,20 +1,18 @@
 package de.omikron.helper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -22,14 +20,14 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import de.omikron.helper.api.FFHttpResponse;
+import de.omikron.helper.api.FFResponseHandler;
 import de.omikron.helper.api.OptionsRequest;
 import de.omikron.helper.api.OptionsResponse;
-import de.omikron.helper.dom.Campaign;
 import de.omikron.helper.reponse.FFResponse;
 import de.omikron.helper.reponse.RecommendationResponse;
 import de.omikron.helper.reponse.SearchResponse;
@@ -37,10 +35,12 @@ import de.omikron.helper.reponse.SuggestResponse;
 
 public class HelperSDK {
 
-	private static final String	ACCESS_CONTROL_ALLOW_ORIGIN		= "Access-Control-Allow-Origin";
-	private static final String	ACCESS_CONTROL_ALLOW_HEADERS	= "Access-Control-Allow-Headers";
+	private static final String	ACCESS_CONTROL_ALLOW_ORIGIN			= "Access-Control-Allow-Origin";
+	private static final String	ACCESS_CONTROL_ALLOW_HEADERS		= "Access-Control-Allow-Headers";
+	private static final String	ACCESS_CONTROL_ALLOW_METHODS		= "Access-Control-Allow-Methods";
+	private static final String	ACCESS_CONTROL_ALLOW_CREDENTIALS	= "Access-Control-Allow-Credentials";
 
-	private static final String	ACCESS_CONTROL_REQUEST_HEADERS	= "Access-Control-Request-Headers";
+	private static final String	ACCESS_CONTROL_REQUEST_HEADERS		= "Access-Control-Request-Headers";
 
 	private FFSettings			settings;
 	private Gson				gson;
@@ -93,7 +93,6 @@ public class HelperSDK {
 			httpOptions.setHeader(header.getKey(), header.getValue());
 		}
 		optionsRequest.setHttpRequest(httpOptions);
-		System.out.println(httpOptions);
 		return optionsRequest;
 	}
 
@@ -110,7 +109,6 @@ public class HelperSDK {
 		return client.execute(request.getHttpOptions(), new ResponseHandler<OptionsResponse>() {
 
 			public OptionsResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-				System.out.println("OPTIONS Response: " + response);
 				OptionsResponse resp = new OptionsResponse();
 				resp.setRequest(request);
 				resp.setHeaders(mergeHeaders(request, response.getAllHeaders()));
@@ -120,57 +118,49 @@ public class HelperSDK {
 	}
 
 	/**
-	 * Merge the headers from teh request back into the result.
+	 * Merge the headers from the request back into the result.
 	 * 
 	 * @param req
 	 * @param resp
 	 * @return
 	 */
 	private Map<String, String> mergeHeaders(OptionsRequest req, Header[] respHeaders) {
-		Map<String, String> reqHeaders = req.getHeaders();
-		System.out.println("RequestHeader");
-		for (Entry<String, String> header : reqHeaders.entrySet()) {
-			System.out.println("\t" + header);
-		}
-
-		System.out.println("ResponseHeader");
 		Map<String, String> responseMap = new HashMap<String, String>();
 		for (Header header : respHeaders) {
-			System.out.println("\t" + header);
 			responseMap.put(header.getName(), header.getValue());
 		}
 
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(ACCESS_CONTROL_ALLOW_ORIGIN, responseMap.get(ACCESS_CONTROL_ALLOW_ORIGIN));
-		headers.put(ACCESS_CONTROL_ALLOW_HEADERS, responseMap.get(ACCESS_CONTROL_ALLOW_HEADERS));
-		// headers.putAll(reqHeaders);
-		for (Entry<String, String> header : reqHeaders.entrySet()) {
-			String key = header.getKey();
-			if (key.startsWith("Access-Control-Request")) {
-				// change to "Access-Control-Allow"
-				String replace = key.replace("Access-Control-Request", "Access-Control-Allow");
-				headers.put(replace, responseMap.get(key));
-			}
-		}
-		// String value = headers.remove(ACCESS_CONTROL_REQUEST_HEADERS);
-		// headers.put(ACCESS_CONTROL_ALLOW_HEADERS, value);
-		// swapValue(headers, ACCESS_CONTROL_REQUEST_HEADERS,
-		// ACCESS_CONTROL_ALLOW_HEADERS);
 
-		System.out.println("After merge");
-		for (Entry<String, String> header : headers.entrySet()) {
-			System.out.println("\t" + header);
-		}
+		// direct copy from FF server response to proxy response
+		headers.put("Server", responseMap.get("Server"));
+		headers.put("Date", responseMap.get("Date"));
+		headers.put("Content-Length", responseMap.get("Content-Length"));
+		headers.put(ACCESS_CONTROL_ALLOW_ORIGIN, responseMap.get(ACCESS_CONTROL_ALLOW_ORIGIN));
+		headers.put(ACCESS_CONTROL_ALLOW_METHODS, responseMap.get(ACCESS_CONTROL_ALLOW_METHODS));
+		headers.put(ACCESS_CONTROL_ALLOW_CREDENTIALS, responseMap.get(ACCESS_CONTROL_ALLOW_CREDENTIALS));
+
+		// merge
+		String reqAllowHeaders = req.getHeaders().get(ACCESS_CONTROL_REQUEST_HEADERS);
+		String ffAllowHeaders = responseMap.get(ACCESS_CONTROL_ALLOW_HEADERS);
+		String merge = merge(ffAllowHeaders, reqAllowHeaders);
+		headers.put(ACCESS_CONTROL_ALLOW_HEADERS, merge);
+
 		return headers;
 	}
 
-	public String merge(String a, String b) {
-		Set<String> set = Collections.EMPTY_SET;
-		set.addAll(Arrays.asList(a.split(",")));
-		set.addAll(Arrays.asList(b.split(",")));
+	private static String merge(String original, String add) {
+		List<String> list = new ArrayList<String>(Arrays.asList(original.split(",")));
+		String[] split = add.split(",");
+		for (String string : split) {
+			if (!list.contains(string)) {
+				list.add(string);
+			}
+		}
+
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		for (String s : set) {
+		for (String s : list) {
 			if (!first) {
 				sb.append(",");
 			}
@@ -196,18 +186,20 @@ public class HelperSDK {
 	// set the payload of the old request as the new request
 	public void redirectGET(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		copyHeaders(req, resp);
-		writeResponse(resp, sendRequest(req));
+		FFHttpResponse sendRequest = sendRequest(req);
+		setHeaders(resp, sendRequest.getHeaders());
+		writeResponse(resp, sendRequest.getData());
 	}
 
 	public void copyHeaders(HttpServletRequest req, HttpServletResponse resp) {
 		setHeaders(resp, extractHeaders(req));
 	}
 
-	public String sendRequest(HttpServletRequest request) throws IOException {
+	public FFHttpResponse sendRequest(HttpServletRequest request) throws IOException {
 		// Build request String
 		final StringBuffer requestURL = new StringBuffer();
 		requestURL.append(fixUrl(settings.getUrl()));
-		requestURL.append(extractService(request));
+		requestURL.append(extractService(request) + ".ff");
 
 		// Add Parameters
 		String queryString = request.getQueryString();
@@ -226,22 +218,8 @@ public class HelperSDK {
 		for (Entry<String, String> e : header.entrySet()) {
 			get.addHeader(e.getKey(), e.getValue());
 		}
-
 		System.out.println("Request: " + get);
-		return client.execute(get, new ResponseHandler<String>() {
-
-			public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
-				int status = response.getStatusLine().getStatusCode();
-				System.out.println("Response: " + status);
-				if (status >= 200 && status < 300) {
-					HttpEntity entity = response.getEntity();
-					return entity != null ? EntityUtils.toString(entity) : null;
-				} else {
-					throw new ClientProtocolException("Unexpected response status: " + status);
-				}
-			}
-
-		});
+		return client.execute(get, new FFResponseHandler());
 	}
 
 	public void writeResponse(HttpServletResponse resp, String content) throws IOException {
@@ -288,16 +266,15 @@ public class HelperSDK {
 
 	public static FFService extractService(HttpServletRequest req) {
 		String path = req.getPathInfo();
-		String extractService = path.substring(path.lastIndexOf("/") + 1, path.length());
-		return FFService.valueOf(extractService.replaceAll(".ff", "").toUpperCase());
+		String servicePart = path.substring(path.lastIndexOf("/") + 1, path.length());
+		return FFService.valueOf(servicePart.replaceAll(".ff", ""));
 	}
 
 	public static Map<String, String> extractHeaders(final HttpServletRequest request) {
+		List<String> headerNames = Collections.list(request.getHeaderNames());
 		Map<String, String> header = new HashMap<String, String>();
-		List<String> list = Collections.list(request.getHeaderNames());
-		for (String h : list) {
+		for (String h : headerNames) {
 			header.put(h, request.getHeader(h));
-			// header.put(h, request.getHeaders(h));
 		}
 		return header;
 	}
