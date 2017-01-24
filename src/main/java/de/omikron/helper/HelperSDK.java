@@ -29,6 +29,7 @@ import de.omikron.helper.api.FFResponseHandler;
 import de.omikron.helper.api.OptionsRequest;
 import de.omikron.helper.api.OptionsResponse;
 import de.omikron.helper.reponse.FFResponse;
+import de.omikron.helper.reponse.ProductCampaignResponse;
 import de.omikron.helper.reponse.RecommendationResponse;
 import de.omikron.helper.reponse.SearchResponse;
 import de.omikron.helper.reponse.SimilarRecordsResponse;
@@ -251,8 +252,7 @@ public class HelperSDK {
 		case SimilarRecords:
 			serviceResponseClass = SimilarRecordsResponse.class;
 		case ProductCampaign:
-			throw new Exception("Not Implemented yet.");
-			// serviceResponseClass = ProductCampaignResponse.class;
+			serviceResponseClass = ProductCampaignResponse.class;
 		default:
 			throw new Exception("No service for: " + service);
 		}
