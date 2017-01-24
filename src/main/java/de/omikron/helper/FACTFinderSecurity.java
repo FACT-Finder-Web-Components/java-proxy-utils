@@ -2,7 +2,7 @@ package de.omikron.helper;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class FFSecurity {
+public class FACTFinderSecurity {
 
 	public static final String	AUTH_SIMPLE		= "simple";
 	public static final String	AUTH_ADVANCED	= "advanced";
@@ -17,7 +17,7 @@ public class FFSecurity {
 	 * @param postfix
 	 * @return getAuthString
 	 */
-	public static String getAuthString(FFSettings settings, String type) {
+	public static String getAuthString(FACTFinderSettings settings, String type) {
 		return getAuthString(type, settings.getAccount(), settings.getPassword(), settings.getPrefix(),
 				settings.getPostfix());
 	}

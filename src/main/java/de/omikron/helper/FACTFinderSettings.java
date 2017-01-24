@@ -1,6 +1,6 @@
 package de.omikron.helper;
 
-public class FFSettings {
+public class FACTFinderSettings {
 
 	private String	url;
 
@@ -10,7 +10,7 @@ public class FFSettings {
 	private String	prefix;
 	private String	postfix;
 
-	public FFSettings() {
+	public FACTFinderSettings() {
 
 	}
 

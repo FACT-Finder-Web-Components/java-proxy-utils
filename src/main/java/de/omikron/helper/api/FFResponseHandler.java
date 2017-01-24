@@ -11,6 +11,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * This is the standard Response handler for a FactFinder Request.
+ * 
+ * @author arno.pitters
+ *
+ */
 public class FFResponseHandler implements ResponseHandler<FFHttpResponse> {
 
 	public FFHttpResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {

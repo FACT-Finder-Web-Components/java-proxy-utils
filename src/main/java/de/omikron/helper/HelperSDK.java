@@ -21,19 +21,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import de.omikron.FFService;
+import de.omikron.FactFinderGsonParser;
+import de.omikron.FactFinderParser;
 import de.omikron.helper.api.FFHttpResponse;
 import de.omikron.helper.api.FFResponseHandler;
 import de.omikron.helper.api.OptionsRequest;
 import de.omikron.helper.api.OptionsResponse;
-import de.omikron.helper.reponse.FFResponse;
-import de.omikron.helper.reponse.ProductCampaignResponse;
-import de.omikron.helper.reponse.RecommendationResponse;
-import de.omikron.helper.reponse.SearchResponse;
-import de.omikron.helper.reponse.SimilarRecordsResponse;
-import de.omikron.helper.reponse.SuggestResponse;
 
 public class HelperSDK {
 
@@ -44,14 +38,15 @@ public class HelperSDK {
 
 	private static final String	ACCESS_CONTROL_REQUEST_HEADERS		= "Access-Control-Request-Headers";
 
-	private FFSettings			settings;
-	private Gson				gson;
+	private FACTFinderSettings	settings;
+	private FactFinderParser	parser;
+
 	private HttpClient			client;
 
-	public HelperSDK(FFSettings settings) {
+	public HelperSDK(FACTFinderSettings settings) {
 		this.settings = settings;
-		this.gson = new GsonBuilder().serializeNulls().create();
 		this.client = HttpClients.createDefault();
+		this.parser = new FactFinderGsonParser();
 	}
 
 	// ########################################
@@ -151,27 +146,6 @@ public class HelperSDK {
 		return headers;
 	}
 
-	private static String merge(String original, String add) {
-		List<String> list = new ArrayList<String>(Arrays.asList(original.split(",")));
-		String[] split = add.split(",");
-		for (String string : split) {
-			if (!list.contains(string)) {
-				list.add(string);
-			}
-		}
-
-		StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (String s : list) {
-			if (!first) {
-				sb.append(",");
-			}
-			first = false;
-			sb.append(s);
-		}
-		return sb.toString();
-	}
-
 	public void writeOptionsResponse(HttpServletResponse resp, OptionsResponse options) {
 		for (Entry<String, String> header : options.getHeaders().entrySet()) {
 			resp.setHeader(header.getKey(), header.getValue());
@@ -195,14 +169,10 @@ public class HelperSDK {
 	}
 
 	public FFHttpResponse request(String url, Map<String, String> header) throws ClientProtocolException, IOException {
-		// Build Request
 		HttpGet get = new HttpGet(url);
-
-		// Add Headers
 		for (Entry<String, String> e : header.entrySet()) {
 			get.addHeader(e.getKey(), e.getValue());
 		}
-		System.out.println("Request: " + get);
 		return client.execute(get, new FFResponseHandler());
 	}
 
@@ -222,7 +192,7 @@ public class HelperSDK {
 		if (queryString != null) {
 			requestURL.append("?");
 			requestURL.append(request.getQueryString());
-			String authString = FFSecurity.getAuthString(settings, FFSecurity.AUTH_ADVANCED);
+			String authString = FACTFinderSecurity.getAuthString(settings, FACTFinderSecurity.AUTH_ADVANCED);
 			requestURL.append("&" + authString);
 		}
 		return requestURL.toString();
@@ -230,37 +200,6 @@ public class HelperSDK {
 
 	public void writeResponse(HttpServletResponse resp, String content) throws IOException {
 		resp.getOutputStream().write(content.getBytes());
-	}
-
-	// ########################
-	// ### PARSE (via Gson) ###
-	// ########################
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public FFResponse parse(String json, FFService service) throws Exception {
-		Class serviceResponseClass = null;
-		switch (service) {
-		case Search:
-			serviceResponseClass = SearchResponse.class;
-			break;
-		case Suggest:
-			serviceResponseClass = SuggestResponse.class;
-			break;
-		case Recommender:
-			serviceResponseClass = RecommendationResponse.class;
-			break;
-		case SimilarRecords:
-			serviceResponseClass = SimilarRecordsResponse.class;
-		case ProductCampaign:
-			serviceResponseClass = ProductCampaignResponse.class;
-		default:
-			throw new Exception("No service for: " + service);
-		}
-		return gson.fromJson(json, serviceResponseClass);
-	}
-
-	public String asJson(FFResponse result) {
-		return gson.toJson(result);
 	}
 
 	// ################
@@ -295,4 +234,32 @@ public class HelperSDK {
 		}
 	}
 
+	private static String merge(String original, String add) {
+		List<String> list = new ArrayList<String>(Arrays.asList(original.split(",")));
+		String[] split = add.split(",");
+		for (String string : split) {
+			if (!list.contains(string)) {
+				list.add(string);
+			}
+		}
+
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (String s : list) {
+			if (!first) {
+				sb.append(",");
+			}
+			first = false;
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+
+	// ###################
+	// ### Other stuff ###
+	// ###################
+
+	public FactFinderParser getParser() {
+		return parser;
+	}
 }

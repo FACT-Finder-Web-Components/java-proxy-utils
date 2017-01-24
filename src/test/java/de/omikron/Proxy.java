@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 
-import de.omikron.helper.FFService;
-import de.omikron.helper.FFSettings;
+import de.omikron.helper.FACTFinderSettings;
 import de.omikron.helper.HelperSDK;
-import de.omikron.helper.reponse.FFResponse;
-import de.omikron.helper.reponse.SearchResponse;
+import de.omikron.reponse.FFResponse;
+import de.omikron.reponse.SearchResponse;
 
 @SuppressWarnings("serial")
 public class Proxy extends HttpServlet {
@@ -36,11 +35,11 @@ public class Proxy extends HttpServlet {
 	}
 
 	private HelperSDK	sdk;
-	private FFSettings	settings;
+	private FACTFinderSettings	settings;
 
 	@Override
 	public void init() throws ServletException {
-		settings = new FFSettings();
+		settings = new FACTFinderSettings();
 		settings.setAccount("admin");
 		settings.setPassword("adminpw");
 		settings.setPrefix("FACT-FINDER");
@@ -67,9 +66,9 @@ public class Proxy extends HttpServlet {
 		sdk.copyHeaders(req, resp);
 		String json = sdk.sendRequest(req).getData();
 		long start = System.currentTimeMillis();
-		SearchResponse parse = (SearchResponse) sdk.parse(json, null);
+		SearchResponse parse = (SearchResponse) sdk.getParser().parse(json, null);
 		System.out.println("parse time:" + (System.currentTimeMillis() - start));
-		sdk.writeResponse(resp, sdk.asJson(parse));
+		sdk.writeResponse(resp, sdk.getParser().asJson(parse));
 	};
 
 	// 4.parse the result to Objects
@@ -80,8 +79,8 @@ public class Proxy extends HttpServlet {
 		FFService service = HelperSDK.extractService(req);
 		String json = sdk.sendRequest(req).getData();
 
-		FFResponse parsedServiceResult = sdk.parse(json, service);
-		sdk.writeResponse(resp, sdk.asJson(parsedServiceResult));
+		FFResponse parsedServiceResult = sdk.getParser().parse(json, service);
+		sdk.writeResponse(resp, sdk.getParser().asJson(parsedServiceResult));
 	};
 
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
