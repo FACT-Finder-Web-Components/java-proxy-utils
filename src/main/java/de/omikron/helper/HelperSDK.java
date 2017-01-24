@@ -31,6 +31,7 @@ import de.omikron.helper.api.OptionsResponse;
 import de.omikron.helper.reponse.FFResponse;
 import de.omikron.helper.reponse.RecommendationResponse;
 import de.omikron.helper.reponse.SearchResponse;
+import de.omikron.helper.reponse.SimilarRecordsResponse;
 import de.omikron.helper.reponse.SuggestResponse;
 
 public class HelperSDK {
@@ -238,15 +239,20 @@ public class HelperSDK {
 	public FFResponse parse(String json, FFService service) throws Exception {
 		Class serviceResponseClass = null;
 		switch (service) {
-		case Recommendation:
-			serviceResponseClass = RecommendationResponse.class;
-			break;
 		case Search:
 			serviceResponseClass = SearchResponse.class;
 			break;
 		case Suggest:
 			serviceResponseClass = SuggestResponse.class;
 			break;
+		case Recommender:
+			serviceResponseClass = RecommendationResponse.class;
+			break;
+		case SimilarRecords:
+			serviceResponseClass = SimilarRecordsResponse.class;
+		case ProductCampaign:
+			throw new Exception("Not Implemented yet.");
+			// serviceResponseClass = ProductCampaignResponse.class;
 		default:
 			throw new Exception("No service for: " + service);
 		}
