@@ -30,10 +30,13 @@
 		</dependency>
 
 		<!-- For testing -->
+		<!-- Jetty 9	Servlet 3.1	Java 1.8	org.eclipse.jetty.*	EPLv1 / ASLv2	Eclipse.org	Stable Release -->
+		<!-- Jetty 8	Servlet 3.0	Java 1.6	org.eclipse.jetty.*	EPLv1 / ASLv2	Eclipse.org	End of Life / Nov 2014 -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>9.3.15.v20161220</version>
+<!-- 			<version>9.3.15.v20161220</version> -->
+			 <version>8.2.0.v20160908</version>
 			<scope>test</scope>
 		</dependency>
 

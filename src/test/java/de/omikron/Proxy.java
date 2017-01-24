@@ -17,7 +17,7 @@ import de.omikron.helper.HelperSDK;
 public class Proxy extends HttpServlet {
 
 	/**
-	 * Start a jetty Server with the Proxy Servlet
+	 * Start a embedded Jetty Server with the Proxy Servlet
 	 * 
 	 * @param args
 	 * @throws Exception
@@ -25,9 +25,8 @@ public class Proxy extends HttpServlet {
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(8080);
 		ServletHandler handler = new ServletHandler();
-		server.setHandler(handler);
-
 		handler.addServletWithMapping(Proxy.class, "/*");
+		server.setHandler(handler);
 		server.start();
 		server.join();
 	}
@@ -37,6 +36,9 @@ public class Proxy extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+		// TODO: add property file loading
+		// settings = FACTFinderSettings.load();
+
 		settings = new FACTFinderSettings();
 		settings.setAccount("admin");
 		settings.setPassword("adminpw");
@@ -44,6 +46,11 @@ public class Proxy extends HttpServlet {
 
 		sdk = new HelperSDK(settings);
 		super.init();
+	}
+
+	// route HTTP OPTIONS
+	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		sdk.redirectOPTIONS(req, resp);
 	}
 
 	// 1. just redirect
@@ -55,11 +62,8 @@ public class Proxy extends HttpServlet {
 	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		sdk.copyHeaders(req, resp);
 		String json = sdk.sendRequest(req).getData();
+		// do something with response
 		sdk.writeResponse(resp, json);
 	};
 
-	//route HTTP OPTIONS 
-	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		sdk.redirectOPTIONS(req, resp);
-	}
 }
