@@ -7,8 +7,8 @@ public class FACTFinderSettings {
 	private String	account;
 	private String	password;
 
-	private String	prefix;
-	private String	postfix;
+	private String	prefix	= "FACT-FINDER";
+	private String	postfix	= "FACT-FINDER";
 
 	public FACTFinderSettings() {
 

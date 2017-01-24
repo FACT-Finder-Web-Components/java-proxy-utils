@@ -22,8 +22,6 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
 import de.omikron.FFService;
-import de.omikron.FactFinderGsonParser;
-import de.omikron.FactFinderParser;
 import de.omikron.helper.api.FFHttpResponse;
 import de.omikron.helper.api.FFResponseHandler;
 import de.omikron.helper.api.OptionsRequest;
@@ -39,14 +37,11 @@ public class HelperSDK {
 	private static final String	ACCESS_CONTROL_REQUEST_HEADERS		= "Access-Control-Request-Headers";
 
 	private FACTFinderSettings	settings;
-	private FactFinderParser	parser;
-
 	private HttpClient			client;
 
 	public HelperSDK(FACTFinderSettings settings) {
 		this.settings = settings;
 		this.client = HttpClients.createDefault();
-		this.parser = new FactFinderGsonParser();
 	}
 
 	// ########################################
@@ -177,9 +172,7 @@ public class HelperSDK {
 	}
 
 	public FFHttpResponse sendRequest(HttpServletRequest request) throws IOException {
-		String requestURL = buildRequestURL(request);
-		Map<String, String> header = extractHeaders(request);
-		return request(requestURL, header);
+		return request(buildRequestURL(request), extractHeaders(request));
 	}
 
 	public String buildRequestURL(HttpServletRequest request) {
@@ -255,11 +248,4 @@ public class HelperSDK {
 		return sb.toString();
 	}
 
-	// ###################
-	// ### Other stuff ###
-	// ###################
-
-	public FactFinderParser getParser() {
-		return parser;
-	}
 }

@@ -34,17 +34,19 @@ public class Proxy extends HttpServlet {
 		server.join();
 	}
 
-	private HelperSDK	sdk;
+	private HelperSDK			sdk;
 	private FACTFinderSettings	settings;
+	private FactFinderParser	parser;
 
 	@Override
 	public void init() throws ServletException {
+		parser = new FactFinderGsonParser();
+		
 		settings = new FACTFinderSettings();
 		settings.setAccount("admin");
 		settings.setPassword("adminpw");
-		settings.setPrefix("FACT-FINDER");
-		settings.setPostfix("FACT-FINDER");
 		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
+		
 		sdk = new HelperSDK(settings);
 		super.init();
 	}
@@ -65,10 +67,8 @@ public class Proxy extends HttpServlet {
 	protected void doGet3(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		sdk.copyHeaders(req, resp);
 		String json = sdk.sendRequest(req).getData();
-		long start = System.currentTimeMillis();
-		SearchResponse parse = (SearchResponse) sdk.getParser().parse(json, null);
-		System.out.println("parse time:" + (System.currentTimeMillis() - start));
-		sdk.writeResponse(resp, sdk.getParser().asJson(parse));
+		SearchResponse parse = (SearchResponse) parser.parse(json, null);
+		sdk.writeResponse(resp, parser.asJson(parse));
 	};
 
 	// 4.parse the result to Objects
@@ -79,8 +79,8 @@ public class Proxy extends HttpServlet {
 		FFService service = HelperSDK.extractService(req);
 		String json = sdk.sendRequest(req).getData();
 
-		FFResponse parsedServiceResult = sdk.getParser().parse(json, service);
-		sdk.writeResponse(resp, sdk.getParser().asJson(parsedServiceResult));
+		FFResponse parsedServiceResult = parser.parse(json, service);
+		sdk.writeResponse(resp, parser.asJson(parsedServiceResult));
 	};
 
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
