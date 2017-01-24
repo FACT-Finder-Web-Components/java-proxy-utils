@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.http.client.methods.HttpOptions;
 
-import de.omikron.FFService;
+import de.omikron.helper.FFService;
 
 /**
  * This is a abstraction of teh Oprions Request. basicaly just header

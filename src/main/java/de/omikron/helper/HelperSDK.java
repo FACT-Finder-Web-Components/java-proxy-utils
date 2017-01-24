@@ -21,7 +21,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
-import de.omikron.FFService;
 import de.omikron.helper.api.FFHttpResponse;
 import de.omikron.helper.api.FFResponseHandler;
 import de.omikron.helper.api.OptionsRequest;
@@ -44,10 +43,9 @@ public class HelperSDK {
 		this.client = HttpClients.createDefault();
 	}
 
-	// ########################################
+	// ######################################
 	// ####### SERVICE REQUESTS PREFLIGHT ###
-	// ########################################
-	// 0. manage preflight
+	// ######################################
 
 	/**
 	 * Easy redirect of the HTTP OPTIONS request utilising the helper methods.
@@ -195,9 +193,9 @@ public class HelperSDK {
 		resp.getOutputStream().write(content.getBytes());
 	}
 
-	// ################
-	// ### Util's ###
-	// ################
+	// #####################
+	// ### Static Util's ###
+	// #####################
 
 	public static String fixUrl(String ffURL) {
 		if (ffURL.charAt(ffURL.length() - 1) != '/') {

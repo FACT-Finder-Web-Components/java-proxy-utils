@@ -12,8 +12,6 @@ import org.eclipse.jetty.servlet.ServletHandler;
 
 import de.omikron.helper.FACTFinderSettings;
 import de.omikron.helper.HelperSDK;
-import de.omikron.reponse.FFResponse;
-import de.omikron.reponse.SearchResponse;
 
 @SuppressWarnings("serial")
 public class Proxy extends HttpServlet {
@@ -36,17 +34,14 @@ public class Proxy extends HttpServlet {
 
 	private HelperSDK			sdk;
 	private FACTFinderSettings	settings;
-	private FactFinderParser	parser;
 
 	@Override
 	public void init() throws ServletException {
-		parser = new FactFinderGsonParser();
-		
 		settings = new FACTFinderSettings();
 		settings.setAccount("admin");
 		settings.setPassword("adminpw");
 		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
-		
+
 		sdk = new HelperSDK(settings);
 		super.init();
 	}
@@ -63,26 +58,7 @@ public class Proxy extends HttpServlet {
 		sdk.writeResponse(resp, json);
 	};
 
-	// 3.parse the result to Objects
-	protected void doGet3(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		sdk.copyHeaders(req, resp);
-		String json = sdk.sendRequest(req).getData();
-		SearchResponse parse = (SearchResponse) parser.parse(json, null);
-		sdk.writeResponse(resp, parser.asJson(parse));
-	};
-
-	// 4.parse the result to Objects
-	protected void doGet4(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		sdk.copyHeaders(req, resp);
-
-		// extract service
-		FFService service = HelperSDK.extractService(req);
-		String json = sdk.sendRequest(req).getData();
-
-		FFResponse parsedServiceResult = parser.parse(json, service);
-		sdk.writeResponse(resp, parser.asJson(parsedServiceResult));
-	};
-
+	//route HTTP OPTIONS 
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		sdk.redirectOPTIONS(req, resp);
 	}

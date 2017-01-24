@@ -2,13 +2,16 @@ package de.omikron.helper;
 
 public class FACTFinderSettings {
 
-	private String	url;
+	public static final String	DEFAUL_PREFIX	= "FACT-FINDER";
+	public static final String	DEFAUL_POSTFIX	= "FACT-FINDER";
 
-	private String	account;
-	private String	password;
+	private String				url;
 
-	private String	prefix	= "FACT-FINDER";
-	private String	postfix	= "FACT-FINDER";
+	private String				account;
+	private String				password;
+
+	private String				prefix			= DEFAUL_PREFIX;
+	private String				postfix			= DEFAUL_POSTFIX;
 
 	public FACTFinderSettings() {
 

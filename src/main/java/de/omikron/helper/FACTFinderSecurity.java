@@ -8,8 +8,6 @@ public class FACTFinderSecurity {
 	public static final String	AUTH_ADVANCED	= "advanced";
 
 	/**
-	 * Authentification string.
-	 * 
 	 * @param authentificationType
 	 * @param username
 	 * @param password
