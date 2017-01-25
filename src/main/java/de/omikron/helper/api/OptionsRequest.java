@@ -8,7 +8,8 @@ import org.apache.http.client.methods.HttpOptions;
 import de.omikron.helper.FFService;
 
 /**
- * This is a abstraction of teh Oprions Request. basicaly just header
+ * This is a abstraction of the HTTP OPTIONS Request. Used internaly for further
+ * mapping and merging of header.
  * 
  * @author arno.pitters
  *

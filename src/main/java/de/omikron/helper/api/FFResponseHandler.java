@@ -12,7 +12,8 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
 /**
- * This is the standard Response handler for a FactFinder Request.
+ * This is the standard implementation of a Response handler for a FACTFinder
+ * Request.
  * 
  * @author arno.pitters
  *

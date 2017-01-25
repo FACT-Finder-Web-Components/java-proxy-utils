@@ -2,6 +2,12 @@ package de.omikron.helper.api;
 
 import java.util.Map;
 
+/**
+ * This is a abstraction of the response from FACTFinder service.
+ * 
+ * @author arno.pitters
+ *
+ */
 public class FFHttpResponse {
 
 	private int					status;
