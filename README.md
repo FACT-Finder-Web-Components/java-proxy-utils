@@ -12,6 +12,7 @@ In every request to the FACTFinder REST interface the SDK will inject your authe
 Just set your credentials in the settings an you are reay to go.
 
 ## How to use
+```java
 	private HelperSDK				sdk;
 	private FACTFinderSettings	settings;
 
@@ -25,9 +26,9 @@ Just set your credentials in the settings an you are reay to go.
 		sdk = new HelperSDK(settings);
 		super.init();
 	}  
-
+```
 Now you can use he SDK to interact with FACTFinder:
-
+```java
 	// 1. just redirect
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 				sdk.redirectGET(req, resp);
@@ -39,13 +40,13 @@ Now you can use he SDK to interact with FACTFinder:
 		String json = sdk.sendRequest(req).getData();
 		sdk.writeResponse(resp, json);
 	};
-
+```
 For Webcomponents compatibility You just need to redirect the HTTP OPTIONS call   
-
+```java
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		sdk.redirectOPTIONS(req, resp);
 	}  
-
+```
 
 ## Java Object Model
 To modify the Response from the FACTFinder Search engine you can create a Object Model with a variety  of different JSON Parser available.
