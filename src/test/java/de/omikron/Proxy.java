@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 
-import de.omikron.helper.FACTFinderSettings;
-import de.omikron.helper.HelperSDK;
+import de.factfinder.helper.FACTFinderSettings;
+import de.factfinder.helper.HelperSDK;
 
 @SuppressWarnings("serial")
 public class Proxy extends HttpServlet {

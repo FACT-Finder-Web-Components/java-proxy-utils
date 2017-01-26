@@ -1,11 +1,11 @@
-package de.omikron.helper.api;
+package de.factfinder.helper.api;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.methods.HttpOptions;
 
-import de.omikron.helper.FFService;
+import de.factfinder.helper.FFService;
 
 /**
  * This is a abstraction of the HTTP OPTIONS Request. Used internaly for further

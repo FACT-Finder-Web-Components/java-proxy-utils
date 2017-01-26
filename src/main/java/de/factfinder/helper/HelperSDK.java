@@ -1,4 +1,4 @@
-package de.omikron.helper;
+package de.factfinder.helper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
-import de.omikron.helper.api.FFHttpResponse;
-import de.omikron.helper.api.FFResponseHandler;
-import de.omikron.helper.api.OptionsRequest;
-import de.omikron.helper.api.OptionsResponse;
+import de.factfinder.helper.api.FFHttpResponse;
+import de.factfinder.helper.api.FFResponseHandler;
+import de.factfinder.helper.api.OptionsRequest;
+import de.factfinder.helper.api.OptionsResponse;
 
 public class HelperSDK {
 

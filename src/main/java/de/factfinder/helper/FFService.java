@@ -1,4 +1,4 @@
-package de.omikron.helper;
+package de.factfinder.helper;
 
 /**
  * This enum holds all supported FACTFinder services. it is used to identify to

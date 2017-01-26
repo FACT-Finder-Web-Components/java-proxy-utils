@@ -1,4 +1,4 @@
-package de.omikron.helper;
+package de.factfinder.helper;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

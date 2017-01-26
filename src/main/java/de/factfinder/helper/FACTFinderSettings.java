@@ -1,4 +1,4 @@
-package de.omikron.helper;
+package de.factfinder.helper;
 
 /**
  * The FACTFinderSettings are your base configuration to use the HelperSDK.
