@@ -12,7 +12,7 @@ In every request to the FACTFinder REST interface the SDK will inject your authe
 Just set your credentials in the settings an you are reay to go.
 
 ## How to use
-	private HelperSDK	sdk;
+	private HelperSDK				sdk;
 	private FACTFinderSettings	settings;
 
 	@Override
@@ -34,7 +34,7 @@ Now you can use he SDK to interact with FACTFinder:
 	};
 
 	// 2. Manually send request
-	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		sdk.copyHeaders(req, resp);
 		String json = sdk.sendRequest(req).getData();
 		sdk.writeResponse(resp, json);
@@ -49,17 +49,7 @@ For Webcomponents compatibility You just need to redirect the HTTP OPTIONS call
 
 ## Java Object Model
 To modify the Response from the FACTFinder Search engine you can create a Object Model with a variety  of different JSON Parser available.
-We provide a Basic Object Model parsed with Gson (link) in the following project:   https://github.com/FACT-Finder/ff-json-gson-parser
-
-Just add the maven dependency to your POM as follow
-
-		<dependency>
-			<groupId>de.omikron</groupId>
-			<artifactId>ff-json-parser</artifactId>
-			<version>7.2-SNAPSHOT</version>
-		</dependency>
-		
-For more information the the GitRepositority (link)
+We provide a Basic Object Model parsed with [Gson](https://github.com/google/gson) in the following project:   https://github.com/FACT-Finder/ff-json-gson-parser
 
 
 
