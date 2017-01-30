@@ -1,11 +1,11 @@
-package de.factfinder.helper.api;
+package de.factfinder.utils.api;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.methods.HttpOptions;
 
-import de.factfinder.helper.FFService;
+import de.factfinder.utils.FFService;
 
 /**
  * This is a abstraction of the HTTP OPTIONS Request. Used internaly for further

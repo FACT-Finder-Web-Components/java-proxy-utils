@@ -1,7 +1,7 @@
-package de.factfinder.helper;
+package de.factfinder.utils;
 
 /**
- * This enum holds all supported FACTFinder services. it is used to identify to
+ * This Enum holds all supported FACTFinder services. It is used to identify for
  * which service the original Request was targeted.
  * 
  * @author arno.pitters

@@ -1,4 +1,4 @@
-package de.factfinder.helper.api;
+package de.factfinder.utils.api;
 
 import java.io.IOException;
 import java.util.HashMap;

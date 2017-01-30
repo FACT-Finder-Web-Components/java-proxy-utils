@@ -1,7 +1,7 @@
-package de.factfinder.helper;
+package de.factfinder.utils;
 
 /**
- * The FACTFinderSettings are your base configuration to use the HelperSDK.
+ * The FACTFinderSettings are your base for configuration.
  * 
  * @author arno.pitters
  *
@@ -20,7 +20,6 @@ public class FACTFinderSettings {
 	private String				postfix			= DEFAUL_POSTFIX;
 
 	public FACTFinderSettings() {
-
 	}
 
 	public String getUrl() {

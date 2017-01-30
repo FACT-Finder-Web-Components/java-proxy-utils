@@ -1,4 +1,4 @@
-package de.factfinder.helper;
+package de.factfinder.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
-import de.factfinder.helper.api.FFHttpResponse;
-import de.factfinder.helper.api.FFResponseHandler;
-import de.factfinder.helper.api.OptionsRequest;
-import de.factfinder.helper.api.OptionsResponse;
+import de.factfinder.utils.api.FFHttpResponse;
+import de.factfinder.utils.api.FFResponseHandler;
+import de.factfinder.utils.api.OptionsRequest;
+import de.factfinder.utils.api.OptionsResponse;
 
-public class HelperSDK {
+public class WebcomponentsUtils {
 
 	private static final String				ACCESS_CONTROL_ALLOW_ORIGIN			= "Access-Control-Allow-Origin";
 	private static final String				ACCESS_CONTROL_ALLOW_HEADERS		= "Access-Control-Allow-Headers";
@@ -39,7 +39,7 @@ public class HelperSDK {
 	private HttpClient						client								= HttpClients.createDefault();
 	private ResponseHandler<FFHttpResponse>	responsehandler						= new FFResponseHandler();
 
-	public HelperSDK(FACTFinderSettings settings) {
+	public WebcomponentsUtils(FACTFinderSettings settings) {
 		this.settings = settings;
 	}
 

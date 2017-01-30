@@ -1,4 +1,4 @@
-package de.factfinder.helper;
+package de.factfinder.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
