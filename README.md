@@ -13,7 +13,7 @@ Just set your credentials in the settings an you are reay to go.
 
 ## How to use
 ```java
-	private HelperSDK				sdk;
+	private WebcomponentsUtils	utils;
 	private FACTFinderSettings	settings;
 
 	@Override
@@ -23,7 +23,7 @@ Just set your credentials in the settings an you are reay to go.
 		settings.setPassword("myPassowrd");
 		// url to your FACTFinder instance for example:
 		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
-		sdk = new HelperSDK(settings);
+		utils = new WebcomponentsUtils(settings);
 		super.init();
 	}  
 ```
@@ -31,26 +31,26 @@ Now you can use he SDK to interact with FACTFinder:
 ```java
 	// 1. just redirect
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				sdk.redirectGET(req, resp);
+				utils.redirectGET(req, resp);
 	};
 
 	// 2. Manually send request
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		sdk.copyHeaders(req, resp);
-		String json = sdk.sendRequest(req).getData();
-		sdk.writeResponse(resp, json);
+		utils.copyHeaders(req, resp);
+		String json = utils.sendRequest(req).getData();
+		utils.writeResponse(resp, json);
 	};
 ```
-For Webcomponents compatibility You just need to redirect the HTTP OPTIONS call   
+For Webcomponents compatibility you just need to redirect the HTTP OPTIONS call   
 ```java
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		sdk.redirectOPTIONS(req, resp);
+		utils.redirectOPTIONS(req, resp);
 	}  
 ```
 
 ## Java Object Model
 To modify the Response from the FACTFinder Search engine you can create a Object Model with a variety  of different JSON Parser available.
-We provide a Basic Object Model parsed with [Gson](https://github.com/google/gson) in the following project:   https://github.com/FACT-Finder/ff-json-gson-parser
+We provide a Basic Object Model parsed with [Gson](https://github.com/google/gson) in the following project:   https://github.com/FACT-Finder-Web-Components/ff-json-parser
 
 
 

@@ -31,7 +31,7 @@ public class Proxy extends HttpServlet {
 		server.join();
 	}
 
-	private WebcomponentsUtils			sdk;
+	private WebcomponentsUtils	utils;
 	private FACTFinderSettings	settings;
 
 	@Override
@@ -39,34 +39,34 @@ public class Proxy extends HttpServlet {
 		System.out.println("Settings");
 		settings = new FACTFinderSettings();
 
-		 settings.setAccount("admin");
-		 settings.setPassword("adminpw");
-		 settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
+		settings.setAccount("admin");
+		settings.setPassword("adminpw");
+		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
 
 		System.out.println(settings.getAccount());
 		System.out.println(settings.getPassword());
 		System.out.println(settings.getPostfix());
 		System.out.println(settings.getPrefix());
 		System.out.println(settings.getUrl());
-		sdk = new WebcomponentsUtils(settings);
+		utils = new WebcomponentsUtils(settings);
 	}
 
 	// route HTTP OPTIONS
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		sdk.redirectOPTIONS(req, resp);
+		utils.redirectOPTIONS(req, resp);
 	}
 
 	// 1. just redirect
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		sdk.redirectGET(req, resp);
+		utils.redirectGET(req, resp);
 	};
 
 	// 2. Manually send request
 	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		WebcomponentsUtils.copyHeaders(req, resp);
-		String json = sdk.sendRequest(req).getData();
+		String json = utils.sendRequest(req).getData();
 		// do something with response
-		sdk.writeResponse(resp, json);
+		utils.writeResponse(resp, json);
 	};
 
 }
