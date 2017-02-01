@@ -1,4 +1,4 @@
-# Webcomponents java-Proxy-utils 
+# Web Components java-proxy-utils 
 The java-proxy-utils are usefull to implement a Java (1.7) based proxy for the Webcomponent Frontend.
 You can simply use it in your Java Servlet for different usecases:
 
