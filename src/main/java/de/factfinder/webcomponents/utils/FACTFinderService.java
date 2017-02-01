@@ -1,4 +1,4 @@
-package de.factfinder.utils;
+package de.factfinder.webcomponents.utils;
 
 /**
  * This Enum holds all supported FACTFinder services. It is used to identify for
@@ -7,7 +7,7 @@ package de.factfinder.utils;
  * @author arno.pitters
  *
  */
-public enum FFService {
+public enum FACTFinderService {
 
 	Search, Suggest, Recommender, SimilarRecords, ProductCampaign
 }

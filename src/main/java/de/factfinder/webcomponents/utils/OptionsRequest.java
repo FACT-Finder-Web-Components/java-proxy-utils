@@ -1,14 +1,12 @@
-package de.factfinder.utils.api;
+package de.factfinder.webcomponents.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.methods.HttpOptions;
 
-import de.factfinder.utils.FFService;
-
 /**
- * This is a abstraction of the HTTP OPTIONS Request. Used internaly for further
+ * This is a abstraction of the HTTP OPTIONS Request. Used internally for further
  * mapping and merging of header.
  * 
  * @author arno.pitters
@@ -16,7 +14,7 @@ import de.factfinder.utils.FFService;
  */
 public class OptionsRequest {
 
-	private FFService			service;
+	private FACTFinderService	service;
 	private Map<String, String>	headers	= new HashMap<String, String>();
 	private HttpOptions			httpOptions;
 
@@ -40,11 +38,11 @@ public class OptionsRequest {
 		this.httpOptions = httpOptions;
 	}
 
-	public FFService getService() {
+	public FACTFinderService getService() {
 		return service;
 	}
 
-	public void setService(FFService service) {
+	public void setService(FACTFinderService service) {
 		this.service = service;
 	}
 

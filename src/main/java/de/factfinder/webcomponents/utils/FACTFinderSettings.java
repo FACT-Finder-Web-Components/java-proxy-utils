@@ -1,4 +1,4 @@
-package de.factfinder.utils;
+package de.factfinder.webcomponents.utils;
 
 /**
  * The FACTFinderSettings are your base for configuration.

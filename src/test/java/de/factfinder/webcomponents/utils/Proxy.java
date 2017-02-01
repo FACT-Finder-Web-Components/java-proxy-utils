@@ -1,4 +1,4 @@
-package de.omikron;
+package de.factfinder.webcomponents.utils;
 
 import java.io.IOException;
 
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 
-import de.factfinder.utils.FACTFinderSettings;
-import de.factfinder.utils.WebcomponentsUtils;
+import de.factfinder.webcomponents.utils.FACTFinderSettings;
+import de.factfinder.webcomponents.utils.ProxyUtils;
 
 @SuppressWarnings("serial")
 public class Proxy extends HttpServlet {
@@ -31,7 +31,7 @@ public class Proxy extends HttpServlet {
 		server.join();
 	}
 
-	private WebcomponentsUtils	utils;
+	private ProxyUtils			utils;
 	private FACTFinderSettings	settings;
 
 	@Override
@@ -48,7 +48,7 @@ public class Proxy extends HttpServlet {
 		System.out.println(settings.getPostfix());
 		System.out.println(settings.getPrefix());
 		System.out.println(settings.getUrl());
-		utils = new WebcomponentsUtils(settings);
+		utils = new ProxyUtils(settings);
 	}
 
 	// route HTTP OPTIONS
@@ -63,7 +63,7 @@ public class Proxy extends HttpServlet {
 
 	// 2. Manually send request
 	protected void doGet2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebcomponentsUtils.copyHeaders(req, resp);
+		ProxyUtils.copyHeaders(req, resp);
 		String json = utils.sendRequest(req).getData();
 		// do something with response
 		utils.writeResponse(resp, json);

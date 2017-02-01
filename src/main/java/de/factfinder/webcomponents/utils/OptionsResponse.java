@@ -1,4 +1,4 @@
-package de.factfinder.utils.api;
+package de.factfinder.webcomponents.utils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,19 +1,20 @@
-# FACTFinder Webcomponents Helper SDK
-The Helper SDK is usefull to implement a Java based Proxy for the Webcomponent Frontend.
+# Webcomponents java-Proxy-utils 
+The java-proxy-utils are usefull to implement a Java (1.7) based proxy for the Webcomponent Frontend.
 You can simply use it in your Java Servlet for different usecases:
 
-- route the incoming HttpServletRequests to the FACTFinder REST interface and automaticaly redirect the response to the HTTPServletResponse.
-- just route the incoming HttpServletRequests to the FACTFinder REST interface and use the Abstracted Response as you whish.
-- Modify the request to the FACTFinder REST interface and work with the response.
+- route the incoming HttpServletRequests to the FACTFinder REST interface and automatically redirect the response to the HTTPServletResponse.
+- just route the incoming HttpServletRequests to the FACTFinder REST interface and use the Abstracted Response as you wish.
+- modify the request to the FACTFinder REST interface and work with the response.
+- manually send a request to the FACTFinder Service
 
 
-## Simplyfied Authenthification
-In every request to the FACTFinder REST interface the SDK will inject your authentication properties into the Security Mechanism so you don't have to bother with that.
+## Simplified Authentication
+In every request to the FACTFinder REST interface the SDK will inject your authentication properties into the security mechanism so you don't have to bother with that.
 Just set your credentials in the settings an you are reay to go.
 
 ## How to use
 ```java
-	private WebcomponentsUtils	utils;
+	private ProxyUtils			utils;
 	private FACTFinderSettings	settings;
 
 	@Override
@@ -22,12 +23,14 @@ Just set your credentials in the settings an you are reay to go.
 		settings.setAccount("admin");
 		settings.setPassword("myPassowrd");
 		// url to your FACTFinder instance for example:
-		settings.setUrl("http://web-components.fact-finder.de/FACT-Finder-7.2");
-		utils = new WebcomponentsUtils(settings);
+		settings.setUrl("http://my-factfinder-isntacne.de/FACT-Finder-7.2");
+		utils = new ProxyUtils(settings);
 		super.init();
 	}  
 ```
+
 Now you can use he SDK to interact with FACTFinder:
+
 ```java
 	// 1. just redirect
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,16 +44,18 @@ Now you can use he SDK to interact with FACTFinder:
 		utils.writeResponse(resp, json);
 	};
 ```
-For Webcomponents compatibility you just need to redirect the HTTP OPTIONS call   
+
+For Webcomponents compatibility you just need to redirect the HTTP OPTIONS call  
+ 
 ```java
 	public void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		utils.redirectOPTIONS(req, resp);
 	}  
 ```
 
-## Java Object Model
-To modify the Response from the FACTFinder Search engine you can create a Object Model with a variety  of different JSON Parser available.
-We provide a Basic Object Model parsed with [Gson](https://github.com/google/gson) in the following project:   https://github.com/FACT-Finder-Web-Components/ff-json-parser
+## Java Domain Model
+To modify the Response from the FACTFinder Search engine you can create a Object Model with a variety of different JSON Parser available.
+We provide a Basic Object Model parsed with [Gson](https://github.com/google/gson) in the following project: [java-factfinder-domain-model](https://github.com/FACT-Finder-Web-Components/java-factfinder-domain-model)
 
 
 

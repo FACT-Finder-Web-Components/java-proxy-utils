@@ -1,4 +1,4 @@
-package de.factfinder.utils.api;
+package de.factfinder.webcomponents.utils;
 
 import java.util.Map;
 
@@ -8,13 +8,13 @@ import java.util.Map;
  * @author arno.pitters
  *
  */
-public class FFHttpResponse {
+public class FACTFinderResponse {
 
 	private int					status;
 	private Map<String, String>	headers;
 	private String				data;
 
-	public FFHttpResponse() {
+	public FACTFinderResponse() {
 	}
 
 	public int getStatus() {

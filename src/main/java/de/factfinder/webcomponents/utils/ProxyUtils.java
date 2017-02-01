@@ -1,4 +1,4 @@
-package de.factfinder.utils;
+package de.factfinder.webcomponents.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,25 +21,20 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.impl.client.HttpClients;
 
-import de.factfinder.utils.api.FFHttpResponse;
-import de.factfinder.utils.api.FFResponseHandler;
-import de.factfinder.utils.api.OptionsRequest;
-import de.factfinder.utils.api.OptionsResponse;
+public class ProxyUtils {
 
-public class WebcomponentsUtils {
+	private static final String					ACCESS_CONTROL_ALLOW_ORIGIN			= "Access-Control-Allow-Origin";
+	private static final String					ACCESS_CONTROL_ALLOW_HEADERS		= "Access-Control-Allow-Headers";
+	private static final String					ACCESS_CONTROL_ALLOW_METHODS		= "Access-Control-Allow-Methods";
+	private static final String					ACCESS_CONTROL_ALLOW_CREDENTIALS	= "Access-Control-Allow-Credentials";
 
-	private static final String				ACCESS_CONTROL_ALLOW_ORIGIN			= "Access-Control-Allow-Origin";
-	private static final String				ACCESS_CONTROL_ALLOW_HEADERS		= "Access-Control-Allow-Headers";
-	private static final String				ACCESS_CONTROL_ALLOW_METHODS		= "Access-Control-Allow-Methods";
-	private static final String				ACCESS_CONTROL_ALLOW_CREDENTIALS	= "Access-Control-Allow-Credentials";
+	private static final String					ACCESS_CONTROL_REQUEST_HEADERS		= "Access-Control-Request-Headers";
 
-	private static final String				ACCESS_CONTROL_REQUEST_HEADERS		= "Access-Control-Request-Headers";
+	private FACTFinderSettings					settings;
+	private HttpClient							client								= HttpClients.createDefault();
+	private ResponseHandler<FACTFinderResponse>	responsehandler						= new FACTFinderResponseHandler();
 
-	private FACTFinderSettings				settings;
-	private HttpClient						client								= HttpClients.createDefault();
-	private ResponseHandler<FFHttpResponse>	responsehandler						= new FFResponseHandler();
-
-	public WebcomponentsUtils(FACTFinderSettings settings) {
+	public ProxyUtils(FACTFinderSettings settings) {
 		this.settings = settings;
 	}
 
@@ -77,7 +72,7 @@ public class WebcomponentsUtils {
 	 * 
 	 * @return a ResponseHandler<FFHttpResponse>
 	 */
-	public ResponseHandler<FFHttpResponse> getResponsehandler() {
+	public ResponseHandler<FACTFinderResponse> getResponsehandler() {
 		return responsehandler;
 	}
 
@@ -88,7 +83,7 @@ public class WebcomponentsUtils {
 	 * @param responsehandler,
 	 *            a new implementation of a ResponseHandler<FFHttpResponse>.
 	 */
-	public void setResponsehandler(ResponseHandler<FFHttpResponse> responsehandler) {
+	public void setResponsehandler(ResponseHandler<FACTFinderResponse> responsehandler) {
 		this.responsehandler = responsehandler;
 	}
 
@@ -129,7 +124,7 @@ public class WebcomponentsUtils {
 	 * @return a OptionsRequest Object
 	 */
 	public OptionsRequest createOptionRequest(Map<String, String> headers) {
-		return createOptionRequest(headers, FFService.Search);
+		return createOptionRequest(headers, FACTFinderService.Search);
 	}
 
 	/**
@@ -141,7 +136,7 @@ public class WebcomponentsUtils {
 	 *            , the FACTFinder Service to send the Request to.
 	 * @return a OptionsRequest Object
 	 */
-	public OptionsRequest createOptionRequest(Map<String, String> headers, FFService service) {
+	public OptionsRequest createOptionRequest(Map<String, String> headers, FACTFinderService service) {
 		OptionsRequest optionsRequest = new OptionsRequest();
 		optionsRequest.setHeaders(headers);
 		optionsRequest.setService(service);
@@ -209,7 +204,7 @@ public class WebcomponentsUtils {
 	 */
 	public void redirectGET(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		copyHeaders(req, resp);
-		FFHttpResponse sendRequest = sendRequest(req);
+		FACTFinderResponse sendRequest = sendRequest(req);
 		setHeaders(resp, sendRequest.getHeaders());
 		writeResponse(resp, sendRequest.getData());
 	}
@@ -227,7 +222,8 @@ public class WebcomponentsUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public FFHttpResponse request(String url, Map<String, String> header) throws ClientProtocolException, IOException {
+	public FACTFinderResponse request(String url, Map<String, String> header)
+			throws ClientProtocolException, IOException {
 		HttpGet get = new HttpGet(url);
 		for (Entry<String, String> e : header.entrySet()) {
 			get.addHeader(e.getKey(), e.getValue());
@@ -244,7 +240,7 @@ public class WebcomponentsUtils {
 	 * @return a FFHttpResponse with status, headers and data.
 	 * @throws IOException
 	 */
-	public FFHttpResponse sendRequest(HttpServletRequest request) throws IOException {
+	public FACTFinderResponse sendRequest(HttpServletRequest request) throws IOException {
 		return request(buildRequestURL(request), extractHeaders(request));
 	}
 
@@ -310,10 +306,10 @@ public class WebcomponentsUtils {
 	 *            the HttpServletRequest.
 	 * @return the Service as FFService Enum.
 	 */
-	public static FFService extractService(HttpServletRequest req) {
+	public static FACTFinderService extractService(HttpServletRequest req) {
 		String path = req.getPathInfo();
 		String servicePart = path.substring(path.lastIndexOf("/") + 1, path.length());
-		return FFService.valueOf(servicePart.replaceAll(".ff", ""));
+		return FACTFinderService.valueOf(servicePart.replaceAll(".ff", ""));
 	}
 
 	/**
